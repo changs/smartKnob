@@ -5,6 +5,10 @@
 #include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
 
+String endpoint = "http://192.168.0.11:3000/";
+const char * wifi_ssid = "UniFiBP";
+const char * wifi_password = "foobar88";
+
 int encoderPinA = D1;
 int encoderPinB = D2;
 int buttonPin = D3;
@@ -28,7 +32,7 @@ boolean isButtonPushDown(void)
 void setup()
 {
   Serial.begin(115200);
-  WiFi.begin("UniFiBP", "foobar88");
+  WiFi.begin(wifi_ssid, wifi_password);
 
   Serial.print("Connecting");
   while (WiFi.status() != WL_CONNECTED)
@@ -92,7 +96,7 @@ void sendRequest(String value)
     HTTPClient http;
 
     Serial.print("[HTTP] begin...\n");
-    if (http.begin(client, "http://192.168.0.11:3000/" + value))
+    if (http.begin(client, endpoint + value))
     {
       Serial.print("[HTTP] GET...\n");
       int httpCode = http.GET();
